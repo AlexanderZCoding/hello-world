@@ -1,0 +1,430 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Critical Engineering Manifesto</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #111;
+            color: #f2f2f2;
+            font-family: "Courier New", Courier, monospace;
+            overflow-x: hidden;
+        }
+
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8vw;
+            border-bottom: 2px solid #f2f2f2;
+        }
+
+        header h1 {
+            font-size: clamp(3rem, 11vw, 10rem);
+            line-height: 0.82;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: -0.08em;
+        }
+
+        header p {
+            margin-top: 4rem;
+            font-size: 1rem;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .manifesto {
+            padding: 8vw 6vw;
+        }
+
+        .statement {
+            position: relative;
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #444;
+            transition: transform 0.4s ease, padding 0.4s ease;
+            cursor: default;
+        }
+
+        .statement:hover {
+            transform: translateX(3vw);
+        }
+
+        .number {
+            position: absolute;
+            left: 0;
+            top: 5vh;
+            font-size: clamp(5rem, 15vw, 14rem);
+            line-height: 1;
+            color: #333;
+            font-weight: bold;
+            z-index: 0;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .statement:hover .number {
+            color: #555;
+            transform: rotate(-8deg);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin-left: 7vw;
+        }
+
+        .label {
+            display: block;
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: clamp(1.5rem, 3.5vw, 4rem);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+        }
+
+        .emphasis {
+            color: #ff3b30;
+            font-weight: bold;
+        }
+
+        .statement:nth-child(2) .content {
+            transform: rotate(-1deg);
+        }
+
+        .statement:nth-child(3) .content {
+            max-width: 800px;
+            margin-left: 15vw;
+        }
+
+        .statement:nth-child(4) .content {
+            transform: rotate(1deg);
+            margin-left: 3vw;
+        }
+
+        .statement:nth-child(5) .content {
+            max-width: 700px;
+            margin-left: 20vw;
+        }
+
+        .statement:nth-child(6) .content {
+            transform: rotate(-2deg);
+        }
+
+        .statement:nth-child(7) .content {
+            max-width: 1100px;
+            margin-left: 8vw;
+        }
+
+        .statement:nth-child(8) .content {
+            margin-left: 25vw;
+        }
+
+        .statement:nth-child(9) .content {
+            transform: rotate(2deg);
+            max-width: 900px;
+        }
+
+        .statement:nth-child(10) .content {
+            margin-left: 12vw;
+        }
+
+        .statement:nth-child(11) .content {
+            transform: rotate(-1deg);
+            max-width: 900px;
+        }
+
+        footer {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10vw;
+        }
+
+        footer h2 {
+            font-size: clamp(2.5rem, 8vw, 8rem);
+            line-height: 0.9;
+            margin: 0;
+        }
+
+        footer span {
+            color: #ff3b30;
+        }
+
+        /* Interactive mode */
+        body.disrupted .statement {
+            transform: rotate(var(--rotation)) translateX(var(--shift));
+        }
+
+        body.disrupted .statement:nth-child(1) {
+            --rotation: 1deg;
+            --shift: 2vw;
+        }
+
+        body.disrupted .statement:nth-child(2) {
+            --rotation: -2deg;
+            --shift: -3vw;
+        }
+
+        body.disrupted .statement:nth-child(3) {
+            --rotation: 3deg;
+            --shift: 4vw;
+        }
+
+        body.disrupted .statement:nth-child(4) {
+            --rotation: -1deg;
+            --shift: -5vw;
+        }
+
+        body.disrupted .statement:nth-child(5) {
+            --rotation: 2deg;
+            --shift: 3vw;
+        }
+
+        body.disrupted .statement:nth-child(6) {
+            --rotation: -3deg;
+            --shift: -2vw;
+        }
+
+        body.disrupted .statement:nth-child(7) {
+            --rotation: 1deg;
+            --shift: 5vw;
+        }
+
+        body.disrupted .statement:nth-child(8) {
+            --rotation: -2deg;
+            --shift: -4vw;
+        }
+
+        body.disrupted .statement:nth-child(9) {
+            --rotation: 2deg;
+            --shift: 3vw;
+        }
+
+        body.disrupted .statement:nth-child(10) {
+            --rotation: -1deg;
+            --shift: -3vw;
+        }
+
+        body.disrupted .statement:nth-child(11) {
+            --rotation: 3deg;
+            --shift: 2vw;
+        }
+
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #f2f2f2;
+            color: #111;
+            padding: 12px 16px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.8rem;
+            z-index: 100;
+            cursor: pointer;
+            border: none;
+        }
+
+        .instructions:hover {
+            background: #ff3b30;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Critical<br>Engineering<br>Manifesto</h1>
+
+        <p>
+            The Critical Engineering Working Group<br>
+            Berlin, October 2011–2021
+        </p>
+
+        <p>
+            Scroll to examine the manifesto.<br>
+            Click the button to disrupt the system.
+        </p>
+    </header>
+
+    <main class="manifesto">
+
+        <section class="statement">
+            <div class="number">0</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    considers Engineering to be the most transformative language
+                    of our time, shaping the way we move, communicate and think.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">1</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    considers any technology depended upon to be both a
+                    <span class="emphasis">challenge</span> and a
+                    <span class="emphasis">threat.</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">2</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    raises awareness that with each technological advance
+                    our techno-political literacy is challenged.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">3</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    deconstructs and incites suspicion of
+                    <span class="emphasis">rich user experiences.</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">4</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    looks beyond the "awe of implementation" to determine
+                    methods of influence and their specific effects.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">5</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    recognises that each work of engineering
+                    <span class="emphasis">engineers its user,</span>
+                    proportional to that user's dependency upon it.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">6</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    expands "machine" to describe interrelationships
+                    encompassing devices, bodies, agents, forces and networks.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">7</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    observes the space between the production and consumption
+                    of technology, acting rapidly to changes in this space.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">8</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    looks to the history of art, architecture, activism,
+                    philosophy and invention and finds exemplary works
+                    of Critical Engineering.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">9</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    notes that written code expands into social and psychological
+                    realms, regulating behaviour between people and the machines
+                    they interact with.
+                </div>
+            </div>
+        </section>
+
+        <section class="statement">
+            <div class="number">10</div>
+            <div class="content">
+                <span class="label">THE CRITICAL ENGINEER</span>
+                <div class="text">
+                    considers the <span class="emphasis">exploit</span> to be
+                    the most desirable form of exposure.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <h2>
+            EXPOSE<br>
+            THE <span>SYSTEM.</span>
+        </h2>
+    </footer>
+
+    <button class="instructions" onclick="toggleDisruption()">
+        DISRUPT THE SYSTEM
+    </button>
+
+    <script>
+        function toggleDisruption() {
+            document.body.classList.toggle("disrupted");
+
+            const button = document.querySelector(".instructions");
+
+            if (document.body.classList.contains("disrupted")) {
+                button.textContent = "RESTORE THE SYSTEM";
+            } else {
+                button.textContent = "DISRUPT THE SYSTEM";
+            }
+        }
+    </script>
+
+</body>
+</html>
+```
